@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>DashboardBlazor</PageTitle>
+<PageTitle>MessageFlowLab</PageTitle>
 
 <div class="page">
     <div class="sidebar">
@@ -9,7 +9,18 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <div class="system-status">
+                <span class="status-dot active"></span>
+                System Active
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-dark">
+                    <i class="oi oi-bell"></i>
+                </button>
+                <button class="btn btn-dark">
+                    <i class="oi oi-cog"></i>
+                </button>
+            </div>
         </div>
 
         <article class="content px-4">

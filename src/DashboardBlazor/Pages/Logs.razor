@@ -1,43 +1,101 @@
 @page "/logs"
 @inherits LogsPageBase
 
-<h3>Message Logs</h3>
+<div class="content-header">
+    <h1>Message Logs</h1>
+    <p>Track and monitor message processing across the system</p>
+</div>
 
-@if (Messages == null)
-{
-    <p><em>Loading...</em></p>
-}
-else if (!Messages.Any())
-{
-    <p>No messages found.</p>
-}
-else
-{
-    <table class="table table-sm table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>CorrelationId</th>
-                <th>User</th>
-                <th>Question</th>
-                <th>Received</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var m in Messages)
-            {
-                <tr>
-                    <td>@m.Id</td>
-                    <td>@m.CorrelationId</td>
-                    <td>@m.User</td>
-                    <td>@m.Question</td>
-                    <td>@m.ReceivedAt.ToString("u")</td>
-                    <td>@m.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-box">
+                    <span class="oi oi-magnifying-glass"></span>
+                    <input type="text" class="form-control" placeholder="Search messages..." />
+                </div>
+                <select class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="Received">Received</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Failed">Failed</option>
+                </select>
+            </div>
+            <button class="btn btn-primary d-flex align-items-center gap-2" @onclick="Refresh">
+                <span class="oi oi-reload"></span>
+                Refresh
+            </button>
+        </div>
 
-<button class="btn btn-secondary" @onclick="Refresh">Refresh</button>
+        @if (Messages == null)
+        {
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Loading messages...</p>
+            </div>
+        }
+        else if (!Messages.Any())
+        {
+            <div class="text-center py-5">
+                <span class="oi oi-inbox display-4 text-muted"></span>
+                <p class="text-muted mt-3">No messages found</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Correlation ID</th>
+                            <th>User</th>
+                            <th>Question</th>
+                            <th>Received At</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Messages)
+                        {
+                            <tr>
+                                <td><span class="text-muted">#@m.Id</span></td>
+                                <td>@m.CorrelationId</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="oi oi-person"></span>
+                                        @m.User
+                                    </div>
+                                </td>
+                                <td>@m.Question</td>
+                                <td>@m.ReceivedAt.ToString("MMM dd, yyyy HH:mm:ss")</td>
+                                <td>
+                                    <span class="status-badge @GetStatusClass(m.Status)">
+                                        <span class="status-dot"></span>
+                                        @m.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string GetStatusClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "completed" => "success",
+            "failed" => "danger",
+            "processing" => "warning",
+            _ => "secondary"
+        };
+    }
+}
