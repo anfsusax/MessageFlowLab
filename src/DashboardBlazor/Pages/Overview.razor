@@ -1,0 +1,29 @@
+@page "/overview"
+@inherits OverviewBase
+
+<PageTitle>Overview</PageTitle>
+
+<h2>Overview</h2>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card p-3 mb-3">
+            <h5>Total messages</h5>
+            <p class="display-6">@TotalMessages</p>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card p-3 mb-3">
+            <h5>RabbitMQ queues</h5>
+            <p class="display-6">@QueueCount</p>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card p-3 mb-3">
+            <h5>Kafka topics</h5>
+            <p class="display-6">@TopicCount</p>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary" @onclick="Load">Refresh</button>

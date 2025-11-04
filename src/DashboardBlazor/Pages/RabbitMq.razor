@@ -1,0 +1,39 @@
+@page "/rabbitmq"
+@inherits RabbitMqPageBase
+
+<h3>RabbitMQ Queues</h3>
+
+@if (Queues == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!Queues.Any())
+{
+    <p>No queues found or unable to contact RabbitMQ management API.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Queue</th>
+                <th>Ready</th>
+                <th>Unacked</th>
+                <th>Consumers</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var q in Queues)
+            {
+                <tr>
+                    <td>@q.name</td>
+                    <td>@q.messages_ready</td>
+                    <td>@q.messages_unacknowledged</td>
+                    <td>@q.consumers</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-secondary" @onclick="Refresh">Refresh</button>

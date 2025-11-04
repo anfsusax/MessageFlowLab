@@ -1,0 +1,35 @@
+@page "/kafka"
+@inherits KafkaPageBase
+
+<h3>Kafka Topics</h3>
+
+@if (Topics == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!Topics.Any())
+{
+    <p>No topics found or Kafka unreachable.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Partitions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Topics)
+            {
+                <tr>
+                    <td>@t.Name</td>
+                    <td>@t.PartitionCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-secondary" @onclick="Refresh">Refresh</button>

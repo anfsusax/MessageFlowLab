@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using DashboardBlazor.Data;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+// Dashboard services
+builder.Services.AddHttpClient<DashboardBlazor.Services.RabbitMqService>();
+builder.Services.AddSingleton<DashboardBlazor.Services.KafkaService>();
+builder.Services.AddScoped<DashboardBlazor.Services.MessageLogService>();
+
+// DbContext for reading MessageLogs
+var conn = builder.Configuration.GetConnectionString("DefaultConnection") ?? "server=localhost;port=3306;database=messageflow;user=user;password=password";
+builder.Services.AddDbContext<DashboardBlazor.Data.AppDbContext>(opt => opt.UseMySql(conn, ServerVersion.AutoDetect(conn)));
 
 var app = builder.Build();
 

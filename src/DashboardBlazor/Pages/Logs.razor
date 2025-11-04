@@ -1,0 +1,43 @@
+@page "/logs"
+@inherits LogsPageBase
+
+<h3>Message Logs</h3>
+
+@if (Messages == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!Messages.Any())
+{
+    <p>No messages found.</p>
+}
+else
+{
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CorrelationId</th>
+                <th>User</th>
+                <th>Question</th>
+                <th>Received</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Messages)
+            {
+                <tr>
+                    <td>@m.Id</td>
+                    <td>@m.CorrelationId</td>
+                    <td>@m.User</td>
+                    <td>@m.Question</td>
+                    <td>@m.ReceivedAt.ToString("u")</td>
+                    <td>@m.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-secondary" @onclick="Refresh">Refresh</button>
