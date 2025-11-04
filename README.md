@@ -6,6 +6,32 @@
 
 Sistema de mensageria distribuído com suporte a múltiplos idiomas e integração com IA, utilizando RabbitMQ, Kafka e MySQL.
 
+[Users / IA Simulator]
+        │
+        ▼
+[MessageGenerator] --(AMQP publish)--> [RabbitMQ Exchange]
+                                           │
+                                           └--> [questions.queue]  ---> [RabbitWorker Consumer]
+                                                                  │ (enriquecer msg, adicionar CorrelationId, timestamps)
+                                                                  ├--(success)--> publish to Kafka topic "processed.questions"
+                                                                  └--(fail x retries)--> [RabbitMQ DLQ]
+                                                                                          │
+                                                                                          ▼
+                                                                                  (DLQ inspection / reprocess)
+                                                                  │
+                                                                  ▼
+[Kafka] (topic: processed.questions) ---> [KafkaWorker Consumer] ---> persist → MySQL
+                                                                  │
+                                                                  ▼
+                                                        [MessageLogger] (metrics + alerts)
+                                                                  │
+                                                                  ▼
+                                                        [DashboardBlazor (SignalR)]
+                                                                  │
+                                                                  ▼
+                                              Visualizações, links (RabbitMQ UI, Kafdrop), tutoriais
+
+
 ## Funcionalidades
 
 - Geração de mensagens em múltiplos idiomas (inglês, português, espanhol)
