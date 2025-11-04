@@ -1,13 +1,24 @@
+<!-- exemplo: src/RabbitWorker/RabbitWorker.csproj -->
 <Project Sdk="Microsoft.NET.Sdk.Worker">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-RabbitWorker-85acebbe-de5e-4479-bc3e-0d4b0459ae0a</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.7.0" />
+		<PackageReference Include="Confluent.Kafka" Version="2.2.0" />
+		<PackageReference Include="Serilog" Version="2.12.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+		<PackageReference Include="Polly" Version="8.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-RabbitWorker-85acebbe-de5e-4479-bc3e-0d4b0459ae0a</UserSecretsId>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SupportEngine\SupportEngine.csproj" />
+	</ItemGroup>
 </Project>
